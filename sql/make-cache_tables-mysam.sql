@@ -12,7 +12,7 @@ BEGIN
     DECLARE cur CURSOR FOR
       SELECT t.table_name
       FROM information_schema.tables t
-      WHERE t.table_schema = DATABASE() AND t.table_type='BASE TABLE' AND t.table_name like '%cache%';
+      WHERE t.table_schema = DATABASE() AND t.table_type='BASE TABLE'; --  AND t.table_name like '%cache%';
     DECLARE CONTINUE HANDLER FOR NOT FOUND SET end_of_tables = 1;
 
     SET FOREIGN_KEY_CHECKS = 0;
@@ -37,5 +37,5 @@ BEGIN
 delimiter ;
 
 CALL cacheTablesEngineChange();
- select table_name, engine from information_schema.tables where table_name like '%cache%';
+ -- select table_name, engine from information_schema.tables where table_name like '%cache%';
  DROP PROCEDURE IF EXISTS cacheTablesEngineChange;
