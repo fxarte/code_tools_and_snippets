@@ -55,7 +55,8 @@ fi
 
 if [ "$color_prompt" = yes ]; then
     #PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\[\e[0;31m\]`svnbranch 2> /dev/null`\[\e[0m\]\$ '
-    PS1='${debian_chroot:+($debian_chroot)}[\[\033[01;32m\]\t\[\033[00m\]]\[\033[01;34m\]\w\[\033[00m\]\[\e[0;31m\]`svnbranch 2> /dev/null`\[\e[0m\]\$ '
+    #PS1='${debian_chroot:+($debian_chroot)}[\[\033[01;32m\]\t\[\033[00m\]]\[\033[01;34m\]\w\[\033[00m\]\[\e[0;31m\]`svnbranch 2> /dev/null`\[\e[0m\]\$ '
+    PS1='${debian_chroot:+($debian_chroot)}[\[\033[01;32m\]\t\[\033[00m\]]\[\033[01;34m\]`smart_path`\[\033[00m\]\[\e[0;31m\]`svnbranch 2> /dev/null`\[\e[0m\]\$ '
 else
     PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
@@ -162,4 +163,16 @@ function svnbranch(){
   echo "(${SVN_FOLDER[0]})";
  fi
 }
+function smart_path() {
+  IFS=/
+  PATH=`pwd`
 
+  ARR=($PATH)
+  TOTAL=${#ARR[@]}
+  if [ "$TOTAL" -gt "8" ]; then 
+    let "MED = $TOTAL/2"
+    echo "${ARR[1]}/../${ARR[$MED]}/../${ARR[$TOTAL-1]}"
+  else
+    pwd
+  fi
+}
